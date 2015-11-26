@@ -12,6 +12,8 @@ void initGlew(SDL_Window* window, const RGBA BGcol);
 
 int main(int argc, char** argv) {
 
+	double pX = 0.0, pY = 0.5, pS = 0.1, pSpeed = 0.04;
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_Window* mainWindow = nullptr;
@@ -32,8 +34,6 @@ int main(int argc, char** argv) {
 	bool prevMOWval = false;
 	bool mouseOnWindow = false;
 
-	int it = 0;
-
 	while (gamestate == PLAYING) {
 		while (SDL_PollEvent(&SDLevnt) == true) {
 
@@ -41,14 +41,31 @@ int main(int argc, char** argv) {
 			case SDL_QUIT:
 				gamestate = NOTPLAYING;
 
-			default:
-				if (SDL_GetMouseFocus() == mainWindow) {
-					mouseOnWindow = true;
-				}
-				else {
-					mouseOnWindow = false;
+			case SDL_KEYDOWN:
+				SDL_Keysym keyPressed = SDLevnt.key.keysym;
+				switch (keyPressed.scancode) {
+				case SDL_SCANCODE_W:
+					pY += pSpeed;
+					break;
+				case SDL_SCANCODE_A:
+					pX -= pSpeed;
+					break;
+				case SDL_SCANCODE_S:
+					pY -= pSpeed;
+					break;
+				case SDL_SCANCODE_D:
+					pX += pSpeed;
+					break;
 				}
 			}
+
+			if (SDL_GetMouseFocus() == mainWindow) {
+				mouseOnWindow = true;
+			}
+			else {
+				mouseOnWindow = false;
+			}
+
 
 			if (mouseOnWindow != prevMOWval) {
 				system("cls");
@@ -63,18 +80,21 @@ int main(int argc, char** argv) {
 		glEnableClientState(GL_COLOR_ARRAY);
 		//draw stuff vvv
 		glBegin(GL_TRIANGLES);
-
 		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex2f(0, 0);
-		glVertex2f(200, 0);
-		glVertex2f(200, 200);
+		glVertex2f(pX, pY);
+		glVertex2f(pX, pY + pS);
+		glVertex2f(pX + pS, pY);
+		glEnd();
 
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex2f(pX + pS, pY + pS);
+		glVertex2f(pX, pY + pS);
+		glVertex2f(pX + pS, pY);
 		glEnd();
 		//draw stuff ^^^
 
 		SDL_GL_SwapWindow(mainWindow); //swap buffer
-
-		it+=1;
 	}
 
 	quitGame();
