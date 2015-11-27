@@ -145,7 +145,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GenericWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Window1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GenericWindow.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Window1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
